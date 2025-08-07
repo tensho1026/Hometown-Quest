@@ -5,11 +5,28 @@ import { HomeView } from "@/components/Home-view"
 import { MyPage } from "@/components/my-page"
 import { QuestDetail } from "@/components/Quest-details"
 import { QuestList } from "@/components/QuestLists"
-import { useState } from "react"
+import { useUser } from "@clerk/nextjs"
+import { useEffect, useState } from "react"
+import { saveUserToDatabase } from "./actions/auth/saveUser"
 
 export default function JimotoQuest() {
+  const {user} = useUser()
+  console.log(user)
   const [currentView, setCurrentView] = useState<"home" | "quest" | "questlist" | "mypage">("home") // Update currentView type
   const [selectedQuest, setSelectedQuest] = useState<any>(null)
+
+    useEffect(() => {
+    if (!user?.id) return;
+
+    saveUserToDatabase({
+      id: user.id,
+      username: user.fullName,
+      imageUrl: user.imageUrl,
+    });
+  }, [user]);
+
+
+
 
   const renderCurrentView = () => {
     switch (currentView) {
