@@ -12,7 +12,7 @@ interface QuestListProps {
   onViewChange: (view: "quest") => void
 }
 
-export function QuestList({ onQuestSelect, onViewChange }: QuestListProps) {
+export function QuestList() {
   const activeQuests = [
     {
       id: 1,
@@ -127,10 +127,10 @@ export function QuestList({ onQuestSelect, onViewChange }: QuestListProps) {
     },
   ]
 
-  const handleQuestClick = (quest: any) => {
-    onQuestSelect(quest)
-    onViewChange("quest")
-  }
+  // const handleQuestClick = (quest: any) => {
+  //   onQuestSelect(quest)
+  //   onViewChange("quest")
+  // }
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
@@ -179,7 +179,7 @@ export function QuestList({ onQuestSelect, onViewChange }: QuestListProps) {
                   <Card
                     key={quest.id}
                     className="border border-amber-200 shadow-md bg-white cursor-pointer hover:shadow-lg transition-all duration-200 hover:scale-[1.02]"
-                    onClick={() => handleQuestClick(quest)}
+                    // onClick={() => handleQuestClick(quest)}
                   >
                     <div className="p-4">
                       <div className="flex items-start gap-3">
@@ -223,7 +223,7 @@ export function QuestList({ onQuestSelect, onViewChange }: QuestListProps) {
                   <Card
                     key={quest.id}
                     className="border border-green-200 shadow-md bg-green-50/50 cursor-pointer hover:shadow-lg transition-all duration-200"
-                    onClick={() => handleQuestClick(quest)}
+                    // onClick={() => handleQuestClick(quest)}
                   >
                     <div className="p-4">
                       <div className="flex items-start gap-3">

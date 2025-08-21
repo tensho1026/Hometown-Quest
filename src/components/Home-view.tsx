@@ -1,18 +1,28 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Bell, User, Camera, Heart, Clock, Footprints, BookOpen } from "lucide-react"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import {
+  Bell,
+  User,
+  Camera,
+  Heart,
+  Clock,
+  Footprints,
+  BookOpen,
+} from "lucide-react";
 
 interface HomeViewProps {
-  onQuestSelect: (quest: any) => void
-  onViewChange: (view: "quest") => void
+  onQuestSelect: (quest: any) => void;
+  onViewChange: (view: "quest") => void;
 }
 
-export function HomeView({ onQuestSelect, onViewChange }: HomeViewProps) {
-  const [backgroundImage, setBackgroundImage] = useState("/placeholder.svg?height=400&width=600")
+export function HomeView() {
+  const [backgroundImage, setBackgroundImage] = useState(
+    "/placeholder.svg?height=400&width=600"
+  );
 
   const dailyQuests = [
     {
@@ -48,7 +58,7 @@ export function HomeView({ onQuestSelect, onViewChange }: HomeViewProps) {
       icon: "📚",
       category: "learning",
     },
-  ]
+  ];
 
   const weeklyQuests = [
     {
@@ -73,12 +83,12 @@ export function HomeView({ onQuestSelect, onViewChange }: HomeViewProps) {
       icon: "📸",
       category: "photo",
     },
-  ]
+  ];
 
-  const handleQuestClick = (quest: any) => {
-    onQuestSelect(quest)
-    onViewChange("quest")
-  }
+  // const handleQuestClick = (quest: any) => {
+  //   onQuestSelect(quest)
+  //   onViewChange("quest")
+  // }
 
   const handleBackgroundChange = () => {
     // 実際の実装では、ユーザーが写真を選択できるようになります
@@ -87,10 +97,10 @@ export function HomeView({ onQuestSelect, onViewChange }: HomeViewProps) {
       "/placeholder.svg?height=400&width=600",
       "/placeholder.svg?height=400&width=600",
       "/placeholder.svg?height=400&width=600",
-    ]
-    const randomImage = newImages[Math.floor(Math.random() * newImages.length)]
-    setBackgroundImage(randomImage)
-  }
+    ];
+    const randomImage = newImages[Math.floor(Math.random() * newImages.length)];
+    setBackgroundImage(randomImage);
+  };
 
   return (
     <div className="flex flex-col h-screen bg-gradient-to-b from-amber-50 to-orange-50">
@@ -105,10 +115,18 @@ export function HomeView({ onQuestSelect, onViewChange }: HomeViewProps) {
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-white hover:bg-white/20"
+            >
               <Bell className="w-5 h-5" />
             </Button>
-            <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-white hover:bg-white/20"
+            >
               <User className="w-5 h-5" />
             </Button>
           </div>
@@ -118,18 +136,27 @@ export function HomeView({ onQuestSelect, onViewChange }: HomeViewProps) {
       <div className="flex-1 overflow-y-auto pb-20">
         {/* Local Photo Section */}
         <div className="relative h-48 overflow-hidden">
-          <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${backgroundImage})` }}>
+          <div
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ backgroundImage: `url(${backgroundImage})` }}
+          >
             <div className="absolute inset-0 bg-black/20"></div>
           </div>
           <div className="absolute bottom-4 right-4">
-            <Button onClick={handleBackgroundChange} size="sm" className="bg-white/90 text-gray-700 hover:bg-white">
+            <Button
+              onClick={handleBackgroundChange}
+              size="sm"
+              className="bg-white/90 text-gray-700 hover:bg-white"
+            >
               <Camera className="w-4 h-4 mr-2" />
               写真を変更
             </Button>
           </div>
           <div className="absolute bottom-4 left-4 text-white">
             <h2 className="text-xl font-bold drop-shadow-lg">今日の地元</h2>
-            <p className="text-sm opacity-90 drop-shadow-lg">あなたの大切な場所</p>
+            <p className="text-sm opacity-90 drop-shadow-lg">
+              あなたの大切な場所
+            </p>
           </div>
         </div>
 
@@ -138,7 +165,9 @@ export function HomeView({ onQuestSelect, onViewChange }: HomeViewProps) {
           <div>
             <div className="flex items-center gap-2 mb-4">
               <Clock className="w-5 h-5 text-amber-600" />
-              <h3 className="text-lg font-bold text-gray-800">今日のクエスト</h3>
+              <h3 className="text-lg font-bold text-gray-800">
+                今日のクエスト
+              </h3>
               <Badge className="bg-amber-100 text-amber-700">毎日更新</Badge>
             </div>
             <div className="space-y-3">
@@ -146,7 +175,7 @@ export function HomeView({ onQuestSelect, onViewChange }: HomeViewProps) {
                 <Card
                   key={quest.id}
                   className="border-2 border-amber-200 shadow-lg bg-white/95 backdrop-blur-sm cursor-pointer hover:shadow-xl transition-all duration-200 hover:scale-[1.02]"
-                  onClick={() => handleQuestClick(quest)}
+                  // onClick={() => handleQuestClick(quest)}
                 >
                   <div className="p-4">
                     <div className="flex items-center gap-3">
@@ -155,12 +184,19 @@ export function HomeView({ onQuestSelect, onViewChange }: HomeViewProps) {
                       </div>
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-1">
-                          <h4 className="font-bold text-gray-800">{quest.title}</h4>
-                          <Badge variant="outline" className="border-amber-400 text-amber-700 text-xs">
+                          <h4 className="font-bold text-gray-800">
+                            {quest.title}
+                          </h4>
+                          <Badge
+                            variant="outline"
+                            className="border-amber-400 text-amber-700 text-xs"
+                          >
                             {quest.type}
                           </Badge>
                         </div>
-                        <p className="text-sm text-gray-600 mb-2">{quest.description}</p>
+                        <p className="text-sm text-gray-600 mb-2">
+                          {quest.description}
+                        </p>
                         <div className="flex items-center gap-4 text-xs text-gray-500">
                           <span className="flex items-center gap-1">
                             <Clock className="w-3 h-3" />
@@ -183,7 +219,9 @@ export function HomeView({ onQuestSelect, onViewChange }: HomeViewProps) {
           <div>
             <div className="flex items-center gap-2 mb-4">
               <Footprints className="w-5 h-5 text-green-600" />
-              <h3 className="text-lg font-bold text-gray-800">今週のチャレンジ</h3>
+              <h3 className="text-lg font-bold text-gray-800">
+                今週のチャレンジ
+              </h3>
               <Badge className="bg-green-100 text-green-700">週替わり</Badge>
             </div>
             <div className="space-y-3">
@@ -191,7 +229,7 @@ export function HomeView({ onQuestSelect, onViewChange }: HomeViewProps) {
                 <Card
                   key={quest.id}
                   className="border-2 border-green-200 shadow-lg bg-white/95 backdrop-blur-sm cursor-pointer hover:shadow-xl transition-all duration-200 hover:scale-[1.02]"
-                  onClick={() => handleQuestClick(quest)}
+                  // onClick={() => handleQuestClick(quest)}
                 >
                   <div className="p-4">
                     <div className="flex items-center gap-3">
@@ -200,12 +238,19 @@ export function HomeView({ onQuestSelect, onViewChange }: HomeViewProps) {
                       </div>
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-1">
-                          <h4 className="font-bold text-gray-800">{quest.title}</h4>
-                          <Badge variant="outline" className="border-green-400 text-green-700 text-xs">
+                          <h4 className="font-bold text-gray-800">
+                            {quest.title}
+                          </h4>
+                          <Badge
+                            variant="outline"
+                            className="border-green-400 text-green-700 text-xs"
+                          >
                             {quest.type}
                           </Badge>
                         </div>
-                        <p className="text-sm text-gray-600 mb-2">{quest.description}</p>
+                        <p className="text-sm text-gray-600 mb-2">
+                          {quest.description}
+                        </p>
                         <div className="flex items-center gap-4 text-xs text-gray-500">
                           <span className="flex items-center gap-1">
                             <Clock className="w-3 h-3" />
@@ -250,5 +295,5 @@ export function HomeView({ onQuestSelect, onViewChange }: HomeViewProps) {
         </div>
       </div>
     </div>
-  )
+  );
 }
