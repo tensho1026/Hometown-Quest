@@ -25,7 +25,7 @@ model User {
 model MstTodaysQuest {
   id Int @id @default(autoincrement())
   icon String
-  title String
+  title String @unique
   description String
   type String
   timer String
@@ -37,7 +37,7 @@ model MstTodaysQuest {
 model MstThisWeekQuest {
   id Int @id @default(autoincrement())
   icon String
-  title String
+  title String @unique
   description String
   type String
   timer String

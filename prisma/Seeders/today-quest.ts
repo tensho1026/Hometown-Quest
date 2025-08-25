@@ -1,4 +1,4 @@
-const todayQuestsn = [
+export const todayQuests = [
   {
     title: "15分お散歩",
     type: "運動",
@@ -13,8 +13,8 @@ const todayQuestsn = [
     title: "地元でお買い物",
     type: "生活",
     point: 50,
-    difficulty: "簡単",
-    duration: "30分",
+    level: "簡単", // difficulty -> level に統一
+    timer: "30分", // duration -> timer に統一
     description: "地元のお店で何か一つお買い物をしよう",
     icon: "🛒",
     category: "shopping",
@@ -23,8 +23,8 @@ const todayQuestsn = [
     title: "本を10ページ読む",
     type: "学習",
     point: 40,
-    difficulty: "簡単",
-    duration: "20分",
+    level: "簡単", // difficulty -> level に統一
+    timer: "20分", // duration -> timer に統一
     description: "好きな本を10ページ読んでみよう",
     icon: "📚",
     category: "learning",
@@ -33,8 +33,8 @@ const todayQuestsn = [
     title: "地元の新しいお店を発見",
     type: "探索",
     point: 100,
-    difficulty: "普通",
-    duration: "1時間",
+    level: "普通", // difficulty -> level に統一
+    timer: "1時間", // duration -> timer に統一
     description: "まだ行ったことのない地元のお店を見つけて訪れてみよう",
     icon: "🏪",
     category: "exploration",
@@ -43,8 +43,8 @@ const todayQuestsn = [
     title: "地元の写真を3枚撮る",
     type: "記録",
     point: 80,
-    difficulty: "普通",
-    duration: "45分",
+    level: "普通", // difficulty -> level に統一
+    timer: "45分", // duration -> timer に統一
     description: "地元の素敵な風景や建物を3枚撮影しよう",
     icon: "📸",
     category: "photo",
@@ -53,8 +53,8 @@ const todayQuestsn = [
     title: "朝の散歩",
     type: "運動",
     point: 30,
-    difficulty: "簡単",
-    duration: "15分",
+    level: "簡単", // difficulty -> level に統一
+    timer: "15分", // duration -> timer に統一
     description: "朝の新鮮な空気を吸いながら散歩しました",
     icon: "🌅",
     category: "daily",
@@ -63,30 +63,28 @@ const todayQuestsn = [
     title: "地元カフェでコーヒー",
     type: "生活",
     point: 50,
-    difficulty: "簡単",
-    duration: "30分",
+    level: "簡単", // difficulty -> level に統一
+    timer: "30分", // duration -> timer に統一
     description: "地元のカフェで美味しいコーヒーを楽しみました",
     icon: "☕",
     category: "shopping",
-    completedDate: "2024-03-14",
   },
   {
     title: "公園のベンチで読書",
     type: "学習",
     point: 40,
-    difficulty: "簡単",
-    duration: "25分",
+    level: "簡単", // difficulty -> level に統一
+    timer: "25分", // duration -> timer に統一
     description: "公園のベンチで小説を読みました",
     icon: "📖",
     category: "learning",
-    completedDate: "2024-03-13",
   },
   {
     title: "商店街の老舗発見",
     type: "探索",
     point: 100,
-    difficulty: "普通",
-    duration: "1時間",
+    level: "普通", // difficulty -> level に統一
+    timer: "1時間", // duration -> timer に統一
     description: "50年続く老舗の和菓子屋さんを発見しました",
     icon: "🍡",
     category: "exploration",
