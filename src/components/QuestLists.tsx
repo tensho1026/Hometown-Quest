@@ -15,7 +15,7 @@ interface QuestListProps {
 export function QuestList() {
   const activeQuests = [
     {
-      id: 1,
+
       title: "15分お散歩",
       type: "運動",
       points: 30,

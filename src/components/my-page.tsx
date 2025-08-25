@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { User, Star, Trophy, MapPin, Calendar, Settings, Crown } from "lucide-react"
+import { UserButton } from "@clerk/nextjs"
 
 export function MyPage() {
   const userStats = {
@@ -58,6 +59,7 @@ export function MyPage() {
               <p className="text-sm opacity-90">あなたの冒険記録</p>
             </div>
           </div>
+          <UserButton/>
           <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
             <Settings className="w-5 h-5" />
           </Button>

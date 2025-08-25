@@ -21,3 +21,27 @@ model User {
   createdAt DateTime  @default(now())
   updateAt  DateTime  @default(now()) @updatedAt
 }
+
+model MstTodaysQuest {
+  id Int @id @default(autoincrement())
+  icon String
+  title String
+  description String
+  type String
+  timer String
+  level String
+  point Int
+  category String
+}
+
+model MstThisWeekQuest {
+  id Int @id @default(autoincrement())
+  icon String
+  title String
+  description String
+  type String
+  timer String
+  level String
+  point Int
+  category String
+}
