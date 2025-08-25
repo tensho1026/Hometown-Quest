@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -13,6 +13,8 @@ import {
   Footprints,
   BookOpen,
 } from "lucide-react";
+import { getTodayQuests } from "@/app/actions/auth/getTodayQuests/route";
+import { dailyQuestType } from "@/types/todayQuest";
 
 interface HomeViewProps {
   onQuestSelect: (quest: any) => void;
@@ -23,43 +25,15 @@ export function HomeView() {
   const [backgroundImage, setBackgroundImage] = useState(
     "/placeholder.svg?height=400&width=600"
   );
+  const [dailyQuests, setDailyQuests] = useState<dailyQuestType>([]);
 
-  const dailyQuests = [
-    {
-      id: 1,
-      title: "15分お散歩",
-      type: "運動",
-      points: 30,
-      difficulty: "簡単",
-      duration: "15分",
-      description: "近所を15分間お散歩して、リフレッシュしよう",
-      icon: "🚶‍♀️",
-      category: "daily",
-    },
-    {
-      id: 2,
-      title: "地元でお買い物",
-      type: "生活",
-      points: 50,
-      difficulty: "簡単",
-      duration: "30分",
-      description: "地元のお店で何か一つお買い物をしよう",
-      icon: "🛒",
-      category: "shopping",
-    },
-    {
-      id: 3,
-      title: "本を10ページ読む",
-      type: "学習",
-      points: 40,
-      difficulty: "簡単",
-      duration: "20分",
-      description: "好きな本を10ページ読んでみよう",
-      icon: "📚",
-      category: "learning",
-    },
-  ];
-
+  useEffect(() => {
+    const fetchtodayQuestsData = async () => {
+      const dailyQuest = await getTodayQuests();
+      setDailyQuests(dailyQuest);
+    };
+    fetchtodayQuestsData();
+  }, []);
   const weeklyQuests = [
     {
       id: 4,
@@ -200,11 +174,11 @@ export function HomeView() {
                         <div className="flex items-center gap-4 text-xs text-gray-500">
                           <span className="flex items-center gap-1">
                             <Clock className="w-3 h-3" />
-                            {quest.duration}
+                            {quest.timer}
                           </span>
                           <span className="flex items-center gap-1">
                             <span className="w-3 h-3 bg-amber-500 rounded-full"></span>
-                            {quest.points}pt
+                            {quest.point}pt
                           </span>
                         </div>
                       </div>
