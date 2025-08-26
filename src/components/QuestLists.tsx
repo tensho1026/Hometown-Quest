@@ -1,21 +1,21 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { List, Clock, CheckCircle, Star } from 'lucide-react'
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { List, Clock, CheckCircle, Star } from "lucide-react";
 
 interface QuestListProps {
-  onQuestSelect: (quest: any) => void
-  onViewChange: (view: "quest") => void
+  onQuestSelect: (quest: any) => void;
+  onViewChange: (view: "quest") => void;
 }
 
 export function QuestList() {
   const activeQuests = [
     {
-
+      id: 1,
       title: "15分お散歩",
       type: "運動",
       points: 30,
@@ -74,7 +74,7 @@ export function QuestList() {
       category: "photo",
       progress: 0,
     },
-  ]
+  ];
 
   const completedQuests = [
     {
@@ -125,7 +125,7 @@ export function QuestList() {
       category: "exploration",
       completedDate: "2024-03-12",
     },
-  ]
+  ];
 
   // const handleQuestClick = (quest: any) => {
   //   onQuestSelect(quest)
@@ -135,15 +135,15 @@ export function QuestList() {
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
       case "簡単":
-        return "bg-green-100 text-green-700"
+        return "bg-green-100 text-green-700";
       case "普通":
-        return "bg-yellow-100 text-yellow-700"
+        return "bg-yellow-100 text-yellow-700";
       case "難しい":
-        return "bg-red-100 text-red-700"
+        return "bg-red-100 text-red-700";
       default:
-        return "bg-gray-100 text-gray-700"
+        return "bg-gray-100 text-gray-700";
     }
-  }
+  };
 
   return (
     <div className="flex flex-col h-screen bg-gradient-to-b from-amber-50 to-orange-50">
@@ -165,10 +165,16 @@ export function QuestList() {
         <Card className="border-2 border-amber-200 shadow-xl bg-white/95 backdrop-blur-sm">
           <Tabs defaultValue="active" className="w-full">
             <TabsList className="grid w-full grid-cols-2 bg-amber-100">
-              <TabsTrigger value="active" className="data-[state=active]:bg-amber-500 data-[state=active]:text-white">
+              <TabsTrigger
+                value="active"
+                className="data-[state=active]:bg-amber-500 data-[state=active]:text-white"
+              >
                 進行中のクエスト
               </TabsTrigger>
-              <TabsTrigger value="completed" className="data-[state=active]:bg-amber-500 data-[state=active]:text-white">
+              <TabsTrigger
+                value="completed"
+                className="data-[state=active]:bg-amber-500 data-[state=active]:text-white"
+              >
                 達成済みクエスト
               </TabsTrigger>
             </TabsList>
@@ -188,25 +194,38 @@ export function QuestList() {
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-2">
-                            <h3 className="font-bold text-gray-800 truncate">{quest.title}</h3>
-                            <Badge variant="outline" className="border-amber-400 text-amber-700 text-xs flex-shrink-0">
+                            <h3 className="font-bold text-gray-800 truncate">
+                              {quest.title}
+                            </h3>
+                            <Badge
+                              variant="outline"
+                              className="border-amber-400 text-amber-700 text-xs flex-shrink-0"
+                            >
                               {quest.type}
                             </Badge>
                           </div>
-                          <p className="text-sm text-gray-600 mb-3 line-clamp-2">{quest.description}</p>
+                          <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+                            {quest.description}
+                          </p>
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-4 text-xs text-gray-500">
                               <span className="flex items-center gap-1">
                                 <Clock className="w-3 h-3" />
                                 {quest.duration}
                               </span>
-                              <Badge className={`text-xs ${getDifficultyColor(quest.difficulty)}`}>
+                              <Badge
+                                className={`text-xs ${getDifficultyColor(
+                                  quest.difficulty
+                                )}`}
+                              >
                                 {quest.difficulty}
                               </Badge>
                             </div>
                             <div className="flex items-center gap-1">
                               <Star className="w-4 h-4 text-amber-500" />
-                              <span className="font-bold text-amber-600">{quest.points}pt</span>
+                              <span className="font-bold text-amber-600">
+                                {quest.points}pt
+                              </span>
                             </div>
                           </div>
                         </div>
@@ -235,26 +254,41 @@ export function QuestList() {
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-2">
-                            <h3 className="font-bold text-gray-800 truncate">{quest.title}</h3>
-                            <Badge variant="outline" className="border-green-400 text-green-700 text-xs flex-shrink-0">
+                            <h3 className="font-bold text-gray-800 truncate">
+                              {quest.title}
+                            </h3>
+                            <Badge
+                              variant="outline"
+                              className="border-green-400 text-green-700 text-xs flex-shrink-0"
+                            >
                               {quest.type}
                             </Badge>
-                            <Badge className="bg-green-500 text-white text-xs flex-shrink-0">完了</Badge>
+                            <Badge className="bg-green-500 text-white text-xs flex-shrink-0">
+                              完了
+                            </Badge>
                           </div>
-                          <p className="text-sm text-gray-600 mb-3 line-clamp-2">{quest.description}</p>
+                          <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+                            {quest.description}
+                          </p>
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-4 text-xs text-gray-500">
                               <span className="flex items-center gap-1">
                                 <Clock className="w-3 h-3" />
                                 {quest.completedDate}
                               </span>
-                              <Badge className={`text-xs ${getDifficultyColor(quest.difficulty)}`}>
+                              <Badge
+                                className={`text-xs ${getDifficultyColor(
+                                  quest.difficulty
+                                )}`}
+                              >
                                 {quest.difficulty}
                               </Badge>
                             </div>
                             <div className="flex items-center gap-1">
                               <Star className="w-4 h-4 text-green-500" />
-                              <span className="font-bold text-green-600">+{quest.points}pt</span>
+                              <span className="font-bold text-green-600">
+                                +{quest.points}pt
+                              </span>
                             </div>
                           </div>
                         </div>
@@ -268,5 +302,5 @@ export function QuestList() {
         </Card>
       </div>
     </div>
-  )
+  );
 }
