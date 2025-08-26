@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { getTodayQuests } from "@/app/actions/auth/getTodayQuests/route";
 import { dailyQuestType } from "@/types/todayQuest";
+import Link from "next/link";
 
 interface HomeViewProps {
   onQuestSelect: (quest: any) => void;
@@ -146,8 +147,8 @@ export function HomeView() {
             </div>
             <div className="space-y-3">
               {dailyQuests.map((quest) => (
+                <Link href={`/QuestDetail/${quest.id}`} key={quest.id}>
                 <Card
-                  key={quest.id}
                   className="border-2 border-amber-200 shadow-lg bg-white/95 backdrop-blur-sm cursor-pointer hover:shadow-xl transition-all duration-200 hover:scale-[1.02]"
                   // onClick={() => handleQuestClick(quest)}
                 >
@@ -185,6 +186,7 @@ export function HomeView() {
                     </div>
                   </div>
                 </Card>
+                </Link>
               ))}
             </div>
           </div>
