@@ -5,12 +5,13 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Star, Clock, Camera } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { QuestDetailType } from "@/types/todayQuest";
 import { getTodayQuestById } from "@/app/actions/getTodayQuestBuId/getTodayQuestById";
-
+import { achieveQuest } from "@/app/actions/achieveQuest/achieveQuest";
+import { useUser } from "@clerk/nextjs";
+import { dailyQuestType } from "@/types/todayQuest";
 
 export function QuestDetail() {
-  const [quest, setQuest] = useState<QuestDetailType | null>(null);
+  const [quest, setQuest] = useState<dailyQuestType | null>(null);
   const params = useParams();
   const id = params.id;
   let questId = null;
@@ -21,15 +22,32 @@ export function QuestDetail() {
     }
   }
 
-  useEffect(() => {
-    if (questId) {
-      const getQuestFunction = async () => {
-        const questDetail = await getTodayQuestById(questId);
-        setQuest(questDetail)
-      };
-      getQuestFunction()
+  const { user } = useUser();
+  const router = useRouter();
+
+ useEffect(() => {
+  if (questId) {
+    const getQuestFunction = async () => {
+      const questDetail = await getTodayQuestById(questId);
+      if (questDetail) {
+        // idをnumberからstringに変換
+        const questDetailWithIdAsString = {
+          ...questDetail,
+          id: String(questDetail.id), // idを文字列に変換
+        };
+        setQuest(questDetailWithIdAsString);
+      }
+    };
+    getQuestFunction();
+  }
+}, []);
+
+  const handleAchieve = async () => {
+    if (questId && user) {
+      await achieveQuest(user?.id,questId);
+      router.push("/");
     }
-  }, []);
+  };
 
   return (
     <div className="flex flex-col h-screen bg-gradient-to-b from-amber-50 to-orange-50">
@@ -143,7 +161,10 @@ export function QuestDetail() {
 
             {/* Action Buttons */}
             <div className="space-y-3">
-              <Button className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold py-3 text-lg shadow-lg">
+              <Button
+                className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold py-3 text-lg shadow-lg"
+                onClick={handleAchieve}
+              >
                 <span className="mr-2">✅</span>
                 クエスト達成
               </Button>
