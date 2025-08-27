@@ -28,7 +28,7 @@ export const saveUserToDatabase = async (user: {
         data: {
           ...(shouldUpdateUsername && { username: user.username }),
           ...(shouldUpdateImageUrl && { imageUrl: user.imageUrl }),
-          updateAt: new Date(),
+          updatedAt: new Date(),
         },
       });
     }

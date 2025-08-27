@@ -13,9 +13,11 @@ import {
   Footprints,
   BookOpen,
 } from "lucide-react";
-import { getTodayQuests } from "@/app/actions/auth/getTodayQuests/route";
+
 import { dailyQuestType } from "@/types/todayQuest";
 import Link from "next/link";
+import { useUser } from "@clerk/nextjs";
+import { getTodayQuests } from "@/app/actions/auth/getTodayQuests/route";
 
 interface HomeViewProps {
   onQuestSelect: (quest: any) => void;
@@ -26,15 +28,18 @@ export function HomeView() {
   const [backgroundImage, setBackgroundImage] = useState(
     "/placeholder.svg?height=400&width=600"
   );
-  const [dailyQuests, setDailyQuests] = useState<dailyQuestType>([]);
+  const [dailyQuests, setDailyQuests] = useState<dailyQuestType[]>([]);
+  const { user,isLoaded } = useUser();
 
-  useEffect(() => {
+useEffect(() => {
+  if (isLoaded && user) { // isLoadedのチェックを追加
     const fetchtodayQuestsData = async () => {
-      const dailyQuest = await getTodayQuests();
+      const dailyQuest = await getTodayQuests(user.id);
       setDailyQuests(dailyQuest);
     };
     fetchtodayQuestsData();
-  }, []);
+  }
+}, [isLoaded, user]); // 依存配列にisLoadedとuserを追加
   const weeklyQuests = [
     {
       id: 4,
@@ -147,45 +152,45 @@ export function HomeView() {
             </div>
             <div className="space-y-3">
               {dailyQuests.map((quest) => (
-                <Link href={`/QuestDetail/${quest.id}`} key={quest.id}>
-                <Card
-                  className="border-2 border-amber-200 shadow-lg bg-white/95 backdrop-blur-sm cursor-pointer hover:shadow-xl transition-all duration-200 hover:scale-[1.02]"
-                  // onClick={() => handleQuestClick(quest)}
-                >
-                  <div className="p-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center text-2xl">
-                        {quest.icon}
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                          <h4 className="font-bold text-gray-800">
-                            {quest.title}
-                          </h4>
-                          <Badge
-                            variant="outline"
-                            className="border-amber-400 text-amber-700 text-xs"
-                          >
-                            {quest.type}
-                          </Badge>
+                <Link href={`/QuestDetail/${quest.id}`}  key={`daily-${quest.id}`}>
+                  <Card
+                    className="border-2 border-amber-200 shadow-lg bg-white/95 backdrop-blur-sm cursor-pointer hover:shadow-xl transition-all duration-200 hover:scale-[1.02]"
+                    // onClick={() => handleQuestClick(quest)}
+                  >
+                    <div className="p-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center text-2xl">
+                          {quest.icon}
                         </div>
-                        <p className="text-sm text-gray-600 mb-2">
-                          {quest.description}
-                        </p>
-                        <div className="flex items-center gap-4 text-xs text-gray-500">
-                          <span className="flex items-center gap-1">
-                            <Clock className="w-3 h-3" />
-                            {quest.timer}
-                          </span>
-                          <span className="flex items-center gap-1">
-                            <span className="w-3 h-3 bg-amber-500 rounded-full"></span>
-                            {quest.point}pt
-                          </span>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-1">
+                            <h4 className="font-bold text-gray-800">
+                              {quest.title}
+                            </h4>
+                            <Badge
+                              variant="outline"
+                              className="border-amber-400 text-amber-700 text-xs"
+                            >
+                              {quest.type}
+                            </Badge>
+                          </div>
+                          <p className="text-sm text-gray-600 mb-2">
+                            {quest.description}
+                          </p>
+                          <div className="flex items-center gap-4 text-xs text-gray-500">
+                            <span className="flex items-center gap-1">
+                              <Clock className="w-3 h-3" />
+                              {quest.timer}
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <span className="w-3 h-3 bg-amber-500 rounded-full"></span>
+                              {quest.point}pt
+                            </span>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </Card>
+                  </Card>
                 </Link>
               ))}
             </div>
