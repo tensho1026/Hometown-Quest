@@ -4,9 +4,9 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Star, Clock, Camera } from "lucide-react";
 import { useEffect, useState } from "react";
-import { getTodayQuestById } from "@/app/actions/getTodayQuestBuId/route";
 import { useParams, useRouter } from "next/navigation";
 import { QuestDetailType } from "@/types/todayQuest";
+import { getTodayQuestById } from "@/app/actions/getTodayQuestBuId/getTodayQuestById";
 
 
 export function QuestDetail() {
@@ -145,7 +145,7 @@ export function QuestDetail() {
             <div className="space-y-3">
               <Button className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold py-3 text-lg shadow-lg">
                 <span className="mr-2">✅</span>
-                クエスト開始
+                クエスト達成
               </Button>
               <Button
                 variant="outline"

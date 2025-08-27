@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { List, Clock, CheckCircle, Star } from "lucide-react";
+import Link from "next/link";
 
 interface QuestListProps {
   onQuestSelect: (quest: any) => void;
@@ -182,56 +183,61 @@ export function QuestList() {
             <TabsContent value="active" className="p-4">
               <div className="space-y-4">
                 {activeQuests.map((quest) => (
-                  <Card
-                    key={quest.id}
-                    className="border border-amber-200 shadow-md bg-white cursor-pointer hover:shadow-lg transition-all duration-200 hover:scale-[1.02]"
-                    // onClick={() => handleQuestClick(quest)}
+                  <Link
+                    href={`/QuestDetail/${quest.id}`}
+                    key={`daily-${quest.id}`}
                   >
-                    <div className="p-4">
-                      <div className="flex items-start gap-3">
-                        <div className="w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center text-2xl flex-shrink-0">
-                          {quest.icon}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 mb-2">
-                            <h3 className="font-bold text-gray-800 truncate">
-                              {quest.title}
-                            </h3>
-                            <Badge
-                              variant="outline"
-                              className="border-amber-400 text-amber-700 text-xs flex-shrink-0"
-                            >
-                              {quest.type}
-                            </Badge>
+                    <Card
+                      key={quest.id}
+                      className="border border-amber-200 shadow-md bg-white cursor-pointer hover:shadow-lg transition-all duration-200 hover:scale-[1.02]"
+                      // onClick={() => handleQuestClick(quest)}
+                    >
+                      <div className="p-4">
+                        <div className="flex items-start gap-3">
+                          <div className="w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center text-2xl flex-shrink-0">
+                            {quest.icon}
                           </div>
-                          <p className="text-sm text-gray-600 mb-3 line-clamp-2">
-                            {quest.description}
-                          </p>
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-4 text-xs text-gray-500">
-                              <span className="flex items-center gap-1">
-                                <Clock className="w-3 h-3" />
-                                {quest.duration}
-                              </span>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2 mb-2">
+                              <h3 className="font-bold text-gray-800 truncate">
+                                {quest.title}
+                              </h3>
                               <Badge
-                                className={`text-xs ${getDifficultyColor(
-                                  quest.difficulty
-                                )}`}
+                                variant="outline"
+                                className="border-amber-400 text-amber-700 text-xs flex-shrink-0"
                               >
-                                {quest.difficulty}
+                                {quest.type}
                               </Badge>
                             </div>
-                            <div className="flex items-center gap-1">
-                              <Star className="w-4 h-4 text-amber-500" />
-                              <span className="font-bold text-amber-600">
-                                {quest.points}pt
-                              </span>
+                            <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+                              {quest.description}
+                            </p>
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-4 text-xs text-gray-500">
+                                <span className="flex items-center gap-1">
+                                  <Clock className="w-3 h-3" />
+                                  {quest.duration}
+                                </span>
+                                <Badge
+                                  className={`text-xs ${getDifficultyColor(
+                                    quest.difficulty
+                                  )}`}
+                                >
+                                  {quest.difficulty}
+                                </Badge>
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <Star className="w-4 h-4 text-amber-500" />
+                                <span className="font-bold text-amber-600">
+                                  {quest.points}pt
+                                </span>
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </Card>
+                    </Card>
+                  </Link>
                 ))}
               </div>
             </TabsContent>

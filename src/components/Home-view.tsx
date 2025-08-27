@@ -17,7 +17,8 @@ import {
 import { dailyQuestType } from "@/types/todayQuest";
 import Link from "next/link";
 import { useUser } from "@clerk/nextjs";
-import { getTodayQuests } from "@/app/actions/auth/getTodayQuests/route";
+import { getTodayQuests } from "@/app/actions/getTodayQuests/getTodayQuests";
+
 
 interface HomeViewProps {
   onQuestSelect: (quest: any) => void;
