@@ -25,6 +25,7 @@ export const getTodayQuests = async (userId: string) => {
   // 既存のクエストがあれば、idをstringに変換して返す
   if (existingQuests.length > 0) {
     return existingQuests.map((quest) => ({
+      isCompleted: quest.isCompleted,
       ...quest.mstTodaysQuest,
       id: String(quest.mstTodaysQuest?.id),
     }));
@@ -51,7 +52,7 @@ export const getTodayQuests = async (userId: string) => {
 
     // 新しく作成したクエストのidをstringに変換して返す
     return randomFive.map((quest) => ({
-      ...quest,
+      isCompleted: false,
       id: String(quest.id),
     }));
   }

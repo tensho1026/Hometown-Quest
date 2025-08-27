@@ -41,6 +41,8 @@ useEffect(() => {
     fetchtodayQuestsData();
   }
 }, [isLoaded, user]); // 依存配列にisLoadedとuserを追加
+
+
   const weeklyQuests = [
     {
       id: 4,

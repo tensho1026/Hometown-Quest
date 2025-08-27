@@ -1,12 +1,14 @@
 "use client";
 
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { List, Clock, CheckCircle, Star } from "lucide-react";
 import Link from "next/link";
+import { dailyQuestType } from "@/types/todayQuest";
+import { useUser } from "@clerk/nextjs";
+import { getTodayQuests } from "@/app/actions/getTodayQuests/getTodayQuests";
 
 interface QuestListProps {
   onQuestSelect: (quest: any) => void;
@@ -14,126 +16,30 @@ interface QuestListProps {
 }
 
 export function QuestList() {
-  const activeQuests = [
-    {
-      id: 1,
-      title: "15分お散歩",
-      type: "運動",
-      points: 30,
-      difficulty: "簡単",
-      duration: "15分",
-      description: "近所を15分間お散歩して、リフレッシュしよう",
-      icon: "🚶‍♀️",
-      category: "daily",
-      progress: 0,
-    },
-    {
-      id: 2,
-      title: "地元でお買い物",
-      type: "生活",
-      points: 50,
-      difficulty: "簡単",
-      duration: "30分",
-      description: "地元のお店で何か一つお買い物をしよう",
-      icon: "🛒",
-      category: "shopping",
-      progress: 0,
-    },
-    {
-      id: 3,
-      title: "本を10ページ読む",
-      type: "学習",
-      points: 40,
-      difficulty: "簡単",
-      duration: "20分",
-      description: "好きな本を10ページ読んでみよう",
-      icon: "📚",
-      category: "learning",
-      progress: 0,
-    },
-    {
-      id: 4,
-      title: "地元の新しいお店を発見",
-      type: "探索",
-      points: 100,
-      difficulty: "普通",
-      duration: "1時間",
-      description: "まだ行ったことのない地元のお店を見つけて訪れてみよう",
-      icon: "🏪",
-      category: "exploration",
-      progress: 0,
-    },
-    {
-      id: 5,
-      title: "地元の写真を3枚撮る",
-      type: "記録",
-      points: 80,
-      difficulty: "普通",
-      duration: "45分",
-      description: "地元の素敵な風景や建物を3枚撮影しよう",
-      icon: "📸",
-      category: "photo",
-      progress: 0,
-    },
-  ];
+  const [dailyQuests, setDailyQuests] = useState<dailyQuestType[]>([]);
+  const [completedQuests, setCompletedQuests] = useState<dailyQuestType[]>([]);
+  const { user, isLoaded } = useUser();
 
-  const completedQuests = [
-    {
-      id: 101,
-      title: "朝の散歩",
-      type: "運動",
-      points: 30,
-      difficulty: "簡単",
-      duration: "15分",
-      description: "朝の新鮮な空気を吸いながら散歩しました",
-      icon: "🌅",
-      category: "daily",
-      completedDate: "2024-03-15",
-    },
-    {
-      id: 102,
-      title: "地元カフェでコーヒー",
-      type: "生活",
-      points: 50,
-      difficulty: "簡単",
-      duration: "30分",
-      description: "地元のカフェで美味しいコーヒーを楽しみました",
-      icon: "☕",
-      category: "shopping",
-      completedDate: "2024-03-14",
-    },
-    {
-      id: 103,
-      title: "公園のベンチで読書",
-      type: "学習",
-      points: 40,
-      difficulty: "簡単",
-      duration: "25分",
-      description: "公園のベンチで小説を読みました",
-      icon: "📖",
-      category: "learning",
-      completedDate: "2024-03-13",
-    },
-    {
-      id: 104,
-      title: "商店街の老舗発見",
-      type: "探索",
-      points: 100,
-      difficulty: "普通",
-      duration: "1時間",
-      description: "50年続く老舗の和菓子屋さんを発見しました",
-      icon: "🍡",
-      category: "exploration",
-      completedDate: "2024-03-12",
-    },
-  ];
+  useEffect(() => {
+    if (isLoaded && user) {
+      // isLoadedのチェックを追加
+      const fetchtodayQuestsData = async () => {
+        const dailyQuest = await getTodayQuests(user.id);
+        setDailyQuests(dailyQuest.filter((quest) => !quest.isCompleted));
 
-  // const handleQuestClick = (quest: any) => {
-  //   onQuestSelect(quest)
-  //   onViewChange("quest")
-  // }
+        // isCompletedがtrueのものをcompletedQuestsにセット
+        setCompletedQuests(dailyQuest.filter((quest) => quest.isCompleted));
+      };
+      fetchtodayQuestsData();
+    }
+  }, [isLoaded, user]); // 依存配列にisLoadedとuserを追加
 
-  const getDifficultyColor = (difficulty: string) => {
+  useEffect(()=> {
+    console.log(dailyQuests)
+    console.log(completedQuests)
+  })
+
+  const getDifficultyColor = (difficulty?: string) => {
     switch (difficulty) {
       case "簡単":
         return "bg-green-100 text-green-700";
@@ -182,7 +88,7 @@ export function QuestList() {
 
             <TabsContent value="active" className="p-4">
               <div className="space-y-4">
-                {activeQuests.map((quest) => (
+                {dailyQuests.map((quest) => (
                   <Link
                     href={`/QuestDetail/${quest.id}`}
                     key={`daily-${quest.id}`}
@@ -216,20 +122,20 @@ export function QuestList() {
                               <div className="flex items-center gap-4 text-xs text-gray-500">
                                 <span className="flex items-center gap-1">
                                   <Clock className="w-3 h-3" />
-                                  {quest.duration}
+                                  {quest.timer}
                                 </span>
                                 <Badge
                                   className={`text-xs ${getDifficultyColor(
-                                    quest.difficulty
+                                    quest.level
                                   )}`}
                                 >
-                                  {quest.difficulty}
+                                  {quest.level}
                                 </Badge>
                               </div>
                               <div className="flex items-center gap-1">
                                 <Star className="w-4 h-4 text-amber-500" />
                                 <span className="font-bold text-amber-600">
-                                  {quest.points}pt
+                                  {quest.point}pt
                                 </span>
                               </div>
                             </div>
@@ -284,16 +190,16 @@ export function QuestList() {
                               </span>
                               <Badge
                                 className={`text-xs ${getDifficultyColor(
-                                  quest.difficulty
+                                  quest.level
                                 )}`}
                               >
-                                {quest.difficulty}
+                                {quest.level}
                               </Badge>
                             </div>
                             <div className="flex items-center gap-1">
                               <Star className="w-4 h-4 text-green-500" />
                               <span className="font-bold text-green-600">
-                                +{quest.points}pt
+                                +{quest.point}pt
                               </span>
                             </div>
                           </div>
