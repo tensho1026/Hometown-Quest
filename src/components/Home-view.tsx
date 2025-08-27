@@ -18,7 +18,9 @@ import { dailyQuestType } from "@/types/todayQuest";
 import Link from "next/link";
 import { useUser } from "@clerk/nextjs";
 import { getTodayQuests } from "@/app/actions/getTodayQuests/getTodayQuests";
-
+import { getMyHomeTownImage } from "@/app/actions/homeTownImage/getMyHomeTown";
+import { changeMyHomeTownImage } from "@/app/actions/homeTownImage/changeImage";
+// 新しく作成するServer Actionをインポート
 
 interface HomeViewProps {
   onQuestSelect: (quest: any) => void;
@@ -26,22 +28,41 @@ interface HomeViewProps {
 }
 
 export function HomeView() {
-  const [backgroundImage, setBackgroundImage] = useState(
-    "/placeholder.svg?height=400&width=600"
-  );
   const [dailyQuests, setDailyQuests] = useState<dailyQuestType[]>([]);
-  const { user,isLoaded } = useUser();
+  const [hometownImage, setMyHometownImage] = useState<string | null>(null);
+  const { user, isLoaded } = useUser();
 
-useEffect(() => {
-  if (isLoaded && user) { // isLoadedのチェックを追加
-    const fetchtodayQuestsData = async () => {
-      const dailyQuest = await getTodayQuests(user.id);
-      setDailyQuests(dailyQuest);
-    };
-    fetchtodayQuestsData();
-  }
-}, [isLoaded, user]); // 依存配列にisLoadedとuserを追加
+  useEffect(() => {
+    if (isLoaded && user) {
+      const fetchHomeData = async () => {
+        const dailyQuest = await getTodayQuests(user.id);
+        const myhomeTown = await getMyHomeTownImage(user.id);
+        setDailyQuests(dailyQuest);
+        if (myhomeTown !== undefined) {
+          setMyHometownImage(myhomeTown);
+        }
+      };
+      fetchHomeData();
+    }
+  }, [isLoaded, user]);
 
+  const handleImageChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0];
+    if (!file || !user?.id) {
+      return;
+    }
+    const formData = new FormData();
+    formData.append("image", file);
+    formData.append("userId", user.id);
+
+    const newImageUrl = await changeMyHomeTownImage(formData);
+
+    if (newImageUrl) {
+      setMyHometownImage(newImageUrl);
+    }
+  };
 
   const weeklyQuests = [
     {
@@ -67,23 +88,6 @@ useEffect(() => {
       category: "photo",
     },
   ];
-
-  // const handleQuestClick = (quest: any) => {
-  //   onQuestSelect(quest)
-  //   onViewChange("quest")
-  // }
-
-  const handleBackgroundChange = () => {
-    // 実際の実装では、ユーザーが写真を選択できるようになります
-    const newImages = [
-      "/placeholder.svg?height=400&width=600",
-      "/placeholder.svg?height=400&width=600",
-      "/placeholder.svg?height=400&width=600",
-      "/placeholder.svg?height=400&width=600",
-    ];
-    const randomImage = newImages[Math.floor(Math.random() * newImages.length)];
-    setBackgroundImage(randomImage);
-  };
 
   return (
     <div className="flex flex-col h-screen bg-gradient-to-b from-amber-50 to-orange-50">
@@ -121,19 +125,31 @@ useEffect(() => {
         <div className="relative h-48 overflow-hidden">
           <div
             className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url(${backgroundImage})` }}
+            style={{
+              backgroundImage: `url(${
+                hometownImage || "/placeholder.svg?height=400&width=600"
+              })`,
+            }}
           >
             <div className="absolute inset-0 bg-black/20"></div>
           </div>
           <div className="absolute bottom-4 right-4">
-            <Button
-              onClick={handleBackgroundChange}
-              size="sm"
-              className="bg-white/90 text-gray-700 hover:bg-white"
-            >
-              <Camera className="w-4 h-4 mr-2" />
-              写真を変更
-            </Button>
+            <label htmlFor="file-upload">
+              <Button
+                size="sm"
+                className="bg-white/90 text-gray-700 hover:bg-white"
+              >
+                <input
+                  id="file-upload"
+                  type="file"
+                  accept="image/*"
+                  className="absolute inset-0 z-10 w-full h-full cursor-pointer opacity-0"
+                  onChange={handleImageChange}
+                />
+                <Camera className="w-4 h-4 mr-2" />
+                写真を変更
+              </Button>
+            </label>
           </div>
           <div className="absolute bottom-4 left-4 text-white">
             <h2 className="text-xl font-bold drop-shadow-lg">今日の地元</h2>
@@ -155,7 +171,10 @@ useEffect(() => {
             </div>
             <div className="space-y-3">
               {dailyQuests.map((quest) => (
-                <Link href={`/QuestDetail/${quest.id}`}  key={`daily-${quest.id}`}>
+                <Link
+                  href={`/QuestDetail/${quest.id}`}
+                  key={`daily-${quest.id}`}
+                >
                   <Card
                     className="border-2 border-amber-200 shadow-lg bg-white/95 backdrop-blur-sm cursor-pointer hover:shadow-xl transition-all duration-200 hover:scale-[1.02]"
                     // onClick={() => handleQuestClick(quest)}

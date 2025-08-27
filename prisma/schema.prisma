@@ -15,6 +15,7 @@ model User {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt // updateAtをupdatedAtに修正
   quests    Quest[] // リレーションのリストフィールドを明示的に定義
+  myHometown String?
 }
 
 model Quest {
