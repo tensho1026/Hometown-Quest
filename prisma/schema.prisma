@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
   output   = "../src/generated/prisma"
@@ -19,29 +13,51 @@ model User {
   username  String?
   imageUrl  String?
   createdAt DateTime  @default(now())
-  updateAt  DateTime  @default(now()) @updatedAt
+  updatedAt DateTime  @updatedAt // updateAtをupdatedAtに修正
+  quests    Quest[] // リレーションのリストフィールドを明示的に定義
+}
+
+model Quest {
+  id                    String              @id @default(uuid())
+  isCompleted           Boolean             @default(false)
+  assignedDate          DateTime            @default(now()) // 💡 クエストが割り当てられた日付
+
+  
+  // Userとのリレーション
+  userId                String
+  user                  User                @relation(fields: [userId], references: [id])
+
+  // MstTodaysQuestとのリレーション
+  mstTodaysQuestId      Int?
+  mstTodaysQuest        MstTodaysQuest?     @relation(fields: [mstTodaysQuestId], references: [id])
+
+  // MstThisWeekQuestとのリレーション
+  mstThisWeekQuestId    Int?
+  mstThisWeekQuest      MstThisWeekQuest?   @relation(fields: [mstThisWeekQuestId], references: [id])
 }
 
 model MstTodaysQuest {
-  id Int @id @default(autoincrement())
-  icon String
-  title String @unique
+  id          Int      @id @default(autoincrement())
+  icon        String
+  title       String   @unique
   description String
-  type String
-  timer String
-  level String
-  point Int
-  category String
+  type        String
+  timer       String
+  level       String
+  point       Int
+  category    String
+  assignedTo  Quest[] // Questモデルへのバックリレーション
 }
 
 model MstThisWeekQuest {
-  id Int @id @default(autoincrement())
-  icon String
-  title String @unique
+  id          Int      @id @default(autoincrement())
+  icon        String
+  title       String   @unique
   description String
-  type String
-  timer String
-  level String
-  point Int
-  category String
+  type        String
+  timer       String
+  level       String
+  point       Int
+  category    String
+  assignedTo  Quest[] // Questモデルへのバックリレーション
 }
