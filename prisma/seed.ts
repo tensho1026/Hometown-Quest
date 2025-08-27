@@ -3,7 +3,6 @@ import { todayQuests } from "./Seeders/today-quest";
 
 async function main() {
   const todayQuestSeed = todayQuests;
-  console.log("Seeding daily quests...");
   for (const quest of todayQuestSeed) {
     // 💡 非同期処理の完了を待つために `await` を追加
     await prisma.mstTodaysQuest.upsert({
@@ -29,7 +28,6 @@ async function main() {
       },
     });
   }
-  console.log("Daily quests seeded successfully!");
 }
 
 main()

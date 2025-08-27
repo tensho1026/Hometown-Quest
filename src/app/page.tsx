@@ -9,7 +9,6 @@ import { saveUserToDatabase } from "./actions/auth/saveUser";
 export default function JimotoQuest() {
   const { user } = useUser();
   const today = new Date()
-  console.log(today)
 
   useEffect(() => {
     if (!user?.id) return;

@@ -24,7 +24,6 @@ export const getTodayQuests = async (userId: string) => {
 
   // 既存のクエストがあれば、idをstringに変換して返す
   if (existingQuests.length > 0) {
-    console.log(existingQuests);
     return existingQuests.map((quest) => ({
       ...quest.mstTodaysQuest,
       id: String(quest.mstTodaysQuest?.id),
@@ -34,7 +33,6 @@ export const getTodayQuests = async (userId: string) => {
     if (allTodaysQuests.length === 0) {
       return [];
     }
-    console.log("aa");
     const randomFive = allTodaysQuests
       .sort(() => Math.random() - 0.5)
       .slice(0, 5);
