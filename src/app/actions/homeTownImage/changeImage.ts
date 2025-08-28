@@ -1,32 +1,3 @@
-// "use server";
-
-// type changeImageProps = {
-//   userId?: string;
-//   imageUrl: string;
-// };
-// import { prisma } from "@/lib/prisma";
-// export const changeMyHomeTownImage = async ({
-//   userId,
-//   imageUrl,
-// }: changeImageProps) => {
-//   if (typeof userId !== "string" || !imageUrl) {
-//     throw new Error("userIdまたはimageUrlが不正です。");
-//   }
-
-//   await prisma.user.upsert({
-//     where: {
-//       id: userId,
-//     },
-//     update: {
-//       myHometown: imageUrl,
-//     },
-//     create: {
-//       id: userId,
-//       myHometown: imageUrl,
-//     },
-//   });
-// };
-// app/actions/changeImage.ts
 "use server";
 
 import { prisma } from "@/lib/prisma";
@@ -36,12 +7,6 @@ export const changeMyHomeTownImage = async (formData: FormData) => {
   try {
     const userId = formData.get("userId") as string;
     const file = formData.get("image") as File;
-
-    console.log("changeMyHomeTownImage called with:", {
-      userId,
-      fileName: file?.name,
-      fileSize: file?.size,
-    });
 
     if (!userId || !file) {
       throw new Error("userIdまたは画像ファイルがありません。");
@@ -64,8 +29,6 @@ export const changeMyHomeTownImage = async (formData: FormData) => {
     const fileExtension = file.name.split(".").pop();
     const uniqueFileName = `${timestamp}.${fileExtension}`;
 
-    console.log(`Uploading file: ${uniqueFileName} for user: ${userId}`);
-
     // 0. バケットが公開設定になっているか確認・修正
     try {
       const { data: updateData, error: updateError } =
@@ -74,8 +37,6 @@ export const changeMyHomeTownImage = async (formData: FormData) => {
         });
       if (updateError) {
         console.warn("Failed to update bucket to public:", updateError);
-      } else {
-        console.log("Bucket set to public:", updateData);
       }
     } catch (bucketError) {
       console.warn("Bucket update error:", bucketError);
@@ -97,7 +58,6 @@ export const changeMyHomeTownImage = async (formData: FormData) => {
 
         if (oldFilePath) {
           await supabaseServer.storage.from("myHomeTown").remove([oldFilePath]);
-          console.log(`Removed old file: ${oldFilePath}`);
         }
       } catch (removeError) {
         console.warn(
@@ -120,14 +80,10 @@ export const changeMyHomeTownImage = async (formData: FormData) => {
       throw new Error(`画像のアップロードに失敗しました: ${error.message}`);
     }
 
-    console.log("Upload successful:", data);
-
     // 3. アップロードした画像の公開URLを取得
     const { data: publicUrlData } = supabaseServer.storage
       .from("myHomeTown")
       .getPublicUrl(data.path);
-
-    console.log("Public URL:", publicUrlData.publicUrl);
 
     // 4. ユーザーのデータベースレコードにURLを保存
     await prisma.user.upsert({
@@ -142,9 +98,6 @@ export const changeMyHomeTownImage = async (formData: FormData) => {
         myHometown: publicUrlData.publicUrl,
       },
     });
-
-    console.log("Database updated successfully");
-
     return publicUrlData.publicUrl;
   } catch (error) {
     console.error("changeMyHomeTownImage error:", error);

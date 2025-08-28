@@ -15,10 +15,9 @@ export const getMyHomeTownImage = async (userId: string) => {
 
     // ユーザーが見つからなかった場合
     if (!myHomeTown) {
-      console.log("ユーザーが見つかりませんでした。");
       return null;
     }
-    
+
     // myHometownプロパティの値を確認して返す
     if (myHomeTown.myHometown) {
       return myHomeTown.myHometown;

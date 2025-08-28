@@ -34,11 +34,6 @@ export function QuestList() {
     }
   }, [isLoaded, user]); // 依存配列にisLoadedとuserを追加
 
-  useEffect(()=> {
-    console.log(dailyQuests)
-    console.log(completedQuests)
-  })
-
   const getDifficultyColor = (difficulty?: string) => {
     switch (difficulty) {
       case "簡単":

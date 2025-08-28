@@ -1,28 +1,5 @@
-"use client";
-
-import { HomeView } from "@/components/Home-view";
-
-import { useUser } from "@clerk/nextjs";
-import { useEffect, useState } from "react";
-import { saveUserToDatabase } from "./actions/auth/saveUser";
+import { HomeView } from "@/components/home/Home-view";
 
 export default function JimotoQuest() {
-  const { user } = useUser();
-  const today = new Date()
-
-  useEffect(() => {
-    if (!user?.id) return;
-
-    saveUserToDatabase({
-      id: user.id,
-      username: user.fullName,
-      imageUrl: user.imageUrl,
-    });
-  }, [user]);
-
-  return (
-    <div className="">
-      <HomeView />
-    </div>
-  );
+  return <HomeView />;
 }
