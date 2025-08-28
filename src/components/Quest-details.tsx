@@ -34,11 +34,11 @@ export function QuestDetail() {
         const questDetail = await getTodayQuestById(questId);
         if (questDetail) {
           // idをnumberからstringに変換
-          const questDetailWithIdAsString = {
+          const questWithStringId = {
             ...questDetail,
-            id: String(questDetail.id), // idを文字列に変換
+            id: String(questDetail.id),
           };
-          setQuest(questDetailWithIdAsString);
+          setQuest(questWithStringId);
         }
       };
       getQuestFunction();
@@ -52,8 +52,18 @@ export function QuestDetail() {
     }
   };
 
+  // クエストの完了状態を取得する関数
+  const isQuestCompleted = () => {
+    if (!quest || !quest.assignedTo || quest.assignedTo.length === 0) {
+      return false;
+    }
+    // assignedTo配列の最初の要素のisCompletedを確認
+    return quest.assignedTo[0].isCompleted;
+  };
+
   useEffect(() => {
-    console.log(quest);
+    console.log("Quest data:", quest);
+    console.log("Is completed:", isQuestCompleted());
   }, [quest]);
   return (
     <div className="flex flex-col h-screen bg-gradient-to-b from-amber-50 to-orange-50">
@@ -64,8 +74,7 @@ export function QuestDetail() {
             <Button
               variant="ghost"
               size="icon"
-              className="text-white hover:bg-white/20"
-            >
+              className="text-white hover:bg-white/20">
               <ArrowLeft className="w-5 h-5" />
             </Button>
           </Link>
@@ -97,14 +106,12 @@ export function QuestDetail() {
               <div className="flex items-center gap-2 mb-2">
                 <Badge
                   variant="outline"
-                  className="border-amber-400 text-amber-700"
-                >
+                  className="border-amber-400 text-amber-700">
                   {quest?.type}
                 </Badge>
                 <Badge
                   variant="secondary"
-                  className="bg-green-100 text-green-700"
-                >
+                  className="bg-green-100 text-green-700">
                   {quest?.level}
                 </Badge>
               </div>
@@ -169,29 +176,25 @@ export function QuestDetail() {
 
             {/* Action Buttons */}
             <div className="space-y-3">
-              {quest?.isCompleted === true ? (
+              {isQuestCompleted() ? (
                 <Button
-                  className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold py-3 text-lg shadow-lg"
-                  onClick={handleAchieve}
-                  disabled
-                >
+                  className="w-full bg-gray-400 hover:bg-gray-400 text-white font-bold py-3 text-lg shadow-lg cursor-not-allowed"
+                  disabled>
                   <span className="mr-2">✅</span>
                   クエスト達成済み
                 </Button>
               ) : (
                 <Button
                   className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold py-3 text-lg shadow-lg"
-                  onClick={handleAchieve}
-                >
-                  <span className="mr-2">✅</span>
+                  onClick={handleAchieve}>
+                  <span className="mr-2">🎯</span>
                   クエスト達成する
                 </Button>
               )}
 
               <Button
                 variant="outline"
-                className="w-full border-2 border-amber-400 text-amber-700 hover:bg-amber-50 font-bold py-3 bg-transparent"
-              >
+                className="w-full border-2 border-amber-400 text-amber-700 hover:bg-amber-50 font-bold py-3 bg-transparent">
                 <Camera className="w-5 h-5 mr-2" />
                 達成報告（写真撮影）
               </Button>

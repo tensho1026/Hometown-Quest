@@ -1,8 +1,6 @@
 export type dailyQuestType = {
-  isCompleted?:boolean
-  assignedDate:string
   id: string;
-  icon?: string; // string | undefined と同じ意味
+  icon?: string;
   title?: string;
   description?: string;
   type?: string;
@@ -10,7 +8,12 @@ export type dailyQuestType = {
   level?: string;
   point?: number;
   category?: string;
-  assignTo:{
-    isCompleted:Boolean
-  }
+  assignedTo: {
+    id: string;
+    isCompleted: boolean;
+    assignedDate: Date;
+    userId: string;
+    mstTodaysQuestId: number | null;
+    mstThisWeekQuestId: number | null;
+  }[];
 };

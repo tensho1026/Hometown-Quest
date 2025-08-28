@@ -132,6 +132,10 @@ export function QuestList() {
             <TabsContent value="completed" className="p-4">
               <div className="space-y-4">
                 {completedQuests.map((quest) => (
+                     <Link
+                     href={`/QuestDetail/${quest.id}`}
+                     key={`daily-${quest.id}`}
+                   >
                   <Card
                     key={quest.id}
                     className="border border-green-200 shadow-md bg-green-50/50 cursor-pointer hover:shadow-lg transition-all duration-200"
@@ -188,6 +192,7 @@ export function QuestList() {
                       </div>
                     </div>
                   </Card>
+                  </Link>
                 ))}
               </div>
             </TabsContent>
