@@ -1,9 +1,7 @@
-// src/components/QuestCard.tsx
 "use client";
 
 import Link from "next/link";
-
-import { Badge, Clock } from "lucide-react";
+import { Clock } from "lucide-react";
 import { dailyQuestType } from "@/types/todayQuest";
 import { Card } from "../ui/card";
 

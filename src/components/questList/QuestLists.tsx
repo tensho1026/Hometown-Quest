@@ -11,11 +11,6 @@ import { useUser } from "@clerk/nextjs";
 import { getTodayQuests } from "@/app/actions/getTodayQuests/getTodayQuests";
 import QuestListHeader from "./QuestListHeader";
 
-interface QuestListProps {
-  onQuestSelect: (quest: any) => void;
-  onViewChange: (view: "quest") => void;
-}
-
 export function QuestList() {
   const [dailyQuests, setDailyQuests] = useState<dailyQuestType[]>([]);
   const [completedQuests, setCompletedQuests] = useState<dailyQuestType[]>([]);
@@ -51,7 +46,7 @@ export function QuestList() {
   return (
     <div className="flex flex-col h-screen bg-gradient-to-b from-amber-50 to-orange-50">
       {/* Header */}
-      <QuestListHeader/>
+      <QuestListHeader />
 
       {/* Content */}
       <div className="flex-1 p-4 overflow-y-auto pb-20">

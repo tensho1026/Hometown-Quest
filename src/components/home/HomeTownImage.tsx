@@ -5,6 +5,7 @@ import { Button } from "../ui/button";
 import { useState, useEffect } from "react";
 import { UserResource } from "@clerk/types";
 import { changeMyHomeTownImage } from "@/app/actions/homeTownImage/changeImage";
+import Image from "next/image";
 
 interface HomeTownImageProps {
   user: UserResource | null | undefined;
@@ -12,7 +13,9 @@ interface HomeTownImageProps {
 }
 
 function HomeTownImage({ user, currentImage }: HomeTownImageProps) {
-  const [hometownImage, setMyHometownImage] = useState<string | null>(currentImage);
+  const [hometownImage, setMyHometownImage] = useState<string | null>(
+    currentImage
+  );
   const [isUploading, setIsUploading] = useState(false);
   const [imageLoadError, setImageLoadError] = useState(false);
 
@@ -37,7 +40,7 @@ function HomeTownImage({ user, currentImage }: HomeTownImageProps) {
       formData.append("userId", user.id); // userIdをServer Actionに渡す
 
       const newImageUrl = await changeMyHomeTownImage(formData);
-      
+
       if (newImageUrl) {
         setMyHometownImage(newImageUrl);
         setImageLoadError(false);
@@ -59,12 +62,13 @@ function HomeTownImage({ user, currentImage }: HomeTownImageProps) {
     <div className="flex-1 overflow-y-auto pb-20">
       <div className="relative h-48 overflow-hidden bg-gray-200">
         {hometownImage ? (
-          <img
+          <Image
             src={hometownImage}
             alt="地元の写真"
             className="absolute inset-0 w-full h-full object-cover transition-all duration-300"
             onLoad={() => setImageLoadError(false)}
             onError={() => setImageLoadError(true)}
+            fill
           />
         ) : (
           <div className="absolute inset-0 bg-gradient-to-br from-amber-200 to-orange-300 flex items-center justify-center">
@@ -80,7 +84,8 @@ function HomeTownImage({ user, currentImage }: HomeTownImageProps) {
             <Button
               size="sm"
               className="bg-white/90 text-gray-700 hover:bg-white"
-              disabled={isUploading}>
+              disabled={isUploading}
+            >
               <input
                 id="file-upload"
                 type="file"

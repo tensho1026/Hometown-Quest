@@ -1,14 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
 import { dailyQuestType } from "@/types/todayQuest";
 import { useUser } from "@clerk/nextjs";
 import { getTodayQuests } from "@/app/actions/getTodayQuests/getTodayQuests";
 import { getMyHomeTownImage } from "@/app/actions/homeTownImage/getMyHomeTown";
 import HomeHeader from "./HomeHeader";
 import HomeTownImage from "./HomeTownImage";
-import TodaysRecord from "./TodaysRecord";
 import { QuestList } from "./QuestList";
 
 export function HomeView() {
@@ -33,31 +31,6 @@ export function HomeView() {
     }
   }, [isLoaded, user]);
 
-  const weeklyQuests = [
-    {
-      id: 4,
-      title: "地元の新しいお店を発見",
-      type: "探索",
-      points: 100,
-      difficulty: "普通",
-      duration: "1時間",
-      description: "まだ行ったことのない地元のお店を見つけて訪れてみよう",
-      icon: "🏪",
-      category: "exploration",
-    },
-    {
-      id: 5,
-      title: "地元の写真を3枚撮る",
-      type: "記録",
-      points: 80,
-      difficulty: "普通",
-      duration: "45分",
-      description: "地元の素敵な風景や建物を3枚撮影しよう",
-      icon: "📸",
-      category: "photo",
-    },
-  ];
-
   return (
     <div className="flex flex-col h-screen bg-gradient-to-b from-amber-50 to-orange-50">
       <HomeHeader />
@@ -73,14 +46,17 @@ export function HomeView() {
             type="daily"
           />
 
+          {/* 未完成なためコメントアウト */}
           {/* Weekly Quests */}
-          <QuestList
+          {/* <QuestList
             title="今週のチャレンジ"
             badgeText="週替わり"
-            quests={weeklyQuests as any[]} // weeklyQuestsの型がdailyQuestTypeと異なるため、キャスト
+            quests={weeklyQuests as any[]}
             type="weekly"
-          />
-          <TodaysRecord />
+          /> */}
+
+          {/* 未完成なためコメントアウト */}
+          {/* <TodaysRecord /> */}
         </div>
       </div>
     </div>
