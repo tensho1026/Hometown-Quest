@@ -83,9 +83,6 @@ export function MyPage() {
                   </h2>
                   <Crown className="w-5 h-5 text-yellow-500" />
                 </div>
-                <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white">
-                  {userStats.title}
-                </Badge>
               </div>
             </div>
 
@@ -95,7 +92,7 @@ export function MyPage() {
                 <Star className="w-6 h-6 text-amber-600 mx-auto mb-1" />
                 <p className="text-sm font-medium text-gray-700">レベル</p>
                 <p className="text-2xl font-bold text-amber-600">
-                  {userStats.level}
+                  {quests.length}
                 </p>
               </div>
               <div className="text-center p-3 bg-green-50 rounded-lg">
@@ -118,7 +115,7 @@ export function MyPage() {
                 <Badge className="w-6 h-6 text-purple-600 mx-auto mb-1" />
                 <p className="text-sm font-medium text-gray-700">バッジ数</p>
                 <p className="text-2xl font-bold text-purple-600">
-                  {userStats.badgeCount}
+                  {quests.length}
                 </p>
               </div>
             </div>

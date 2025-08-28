@@ -44,6 +44,7 @@ export function HomeView() {
             badgeText="毎日更新"
             quests={dailyQuests}
             type="daily"
+            
           />
 
           {/* 未完成なためコメントアウト */}

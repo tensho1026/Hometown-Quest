@@ -10,4 +10,7 @@ export type dailyQuestType = {
   level?: string;
   point?: number;
   category?: string;
+  assignTo:{
+    isCompleted:Boolean
+  }
 };

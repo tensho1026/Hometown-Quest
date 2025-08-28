@@ -9,12 +9,15 @@ import { getTodayQuestById } from "@/app/actions/getTodayQuestBuId/getTodayQuest
 import { achieveQuest } from "@/app/actions/achieveQuest/achieveQuest";
 import { useUser } from "@clerk/nextjs";
 import { dailyQuestType } from "@/types/todayQuest";
+import Link from "next/link";
 
 export function QuestDetail() {
-  const [quest, setQuest] = useState<dailyQuestType | null>(null);
+  const [quest, setQuest] = useState<dailyQuestType | null>();
   const params = useParams();
   const id = params.id;
+
   let questId = null;
+
   if (typeof id === "string") {
     const todayQuestID = parseInt(id, 10);
     if (!isNaN(todayQuestID)) {
@@ -25,42 +28,47 @@ export function QuestDetail() {
   const { user } = useUser();
   const router = useRouter();
 
- useEffect(() => {
-  if (questId) {
-    const getQuestFunction = async () => {
-      const questDetail = await getTodayQuestById(questId);
-      if (questDetail) {
-        // idをnumberからstringに変換
-        const questDetailWithIdAsString = {
-          ...questDetail,
-          id: String(questDetail.id), // idを文字列に変換
-        };
-        setQuest(questDetailWithIdAsString);
-      }
-    };
-    getQuestFunction();
-  }
-}, []);
+  useEffect(() => {
+    if (questId) {
+      const getQuestFunction = async () => {
+        const questDetail = await getTodayQuestById(questId);
+        if (questDetail) {
+          // idをnumberからstringに変換
+          const questDetailWithIdAsString = {
+            ...questDetail,
+            id: String(questDetail.id), // idを文字列に変換
+          };
+          setQuest(questDetailWithIdAsString);
+        }
+      };
+      getQuestFunction();
+    }
+  }, []);
 
   const handleAchieve = async () => {
     if (questId && user) {
-      await achieveQuest(user?.id,questId);
+      await achieveQuest(user?.id, questId);
       router.push("/");
     }
   };
 
+  useEffect(() => {
+    console.log(quest);
+  }, [quest]);
   return (
     <div className="flex flex-col h-screen bg-gradient-to-b from-amber-50 to-orange-50">
       {/* Header */}
       <div className="bg-gradient-to-r from-amber-600 to-orange-600 text-white p-4 shadow-lg">
         <div className="flex items-center gap-3">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-white hover:bg-white/20"
-          >
-            <ArrowLeft className="w-5 h-5" />
-          </Button>
+          <Link href="/">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-white hover:bg-white/20"
+            >
+              <ArrowLeft className="w-5 h-5" />
+            </Button>
+          </Link>
           <div>
             <h1 className="font-bold text-lg">クエスト詳細</h1>
             <p className="text-sm opacity-90">冒険の準備をしよう</p>
@@ -161,13 +169,25 @@ export function QuestDetail() {
 
             {/* Action Buttons */}
             <div className="space-y-3">
-              <Button
-                className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold py-3 text-lg shadow-lg"
-                onClick={handleAchieve}
-              >
-                <span className="mr-2">✅</span>
-                クエスト達成
-              </Button>
+              {quest?.isCompleted === true ? (
+                <Button
+                  className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold py-3 text-lg shadow-lg"
+                  onClick={handleAchieve}
+                  disabled
+                >
+                  <span className="mr-2">✅</span>
+                  クエスト達成済み
+                </Button>
+              ) : (
+                <Button
+                  className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold py-3 text-lg shadow-lg"
+                  onClick={handleAchieve}
+                >
+                  <span className="mr-2">✅</span>
+                  クエスト達成する
+                </Button>
+              )}
+
               <Button
                 variant="outline"
                 className="w-full border-2 border-amber-400 text-amber-700 hover:bg-amber-50 font-bold py-3 bg-transparent"

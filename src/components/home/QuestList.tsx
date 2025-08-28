@@ -26,7 +26,7 @@ export function QuestList({ title, badgeText, quests, type }: QuestListProps) {
       </div>
       <div className="space-y-3">
         {quests.map((quest) => (
-          <QuestCol key={quest.id} quest={quest} type={type} />
+          <QuestCol key={quest.id} quest={quest} type={type} isCompleted={quest.isCompleted}/>
         ))}
       </div>
     </div>
