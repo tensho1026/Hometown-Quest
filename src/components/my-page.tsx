@@ -15,6 +15,7 @@ export function MyPage() {
   const [quests, setQuests] = useState<dailyQuestType[]>([]);
 
   const { user, isLoaded } = useUser();
+
   const userStats = {
     nickname: "冒険者タロウ",
     level: 12,
@@ -56,9 +57,10 @@ export function MyPage() {
     }
   }, [user, isLoaded]);
 
-  useEffect(() => {
-    console.log(quests);
-  }, [quests]);
+  const totalPoints = quests.reduce((sum, quest) => {
+    return sum + (quest.point ?? 0);
+  }, 0);
+
 
   return (
     <div className="flex flex-col h-screen bg-gradient-to-b from-amber-50 to-orange-50">
@@ -100,7 +102,7 @@ export function MyPage() {
                 <Trophy className="w-6 h-6 text-green-600 mx-auto mb-1" />
                 <p className="text-sm font-medium text-gray-700">総ポイント</p>
                 <p className="text-2xl font-bold text-green-600">
-                  {userStats.totalPoints.toLocaleString()}
+                  {totalPoints}
                 </p>
               </div>
               <div className="text-center p-3 bg-blue-50 rounded-lg">
