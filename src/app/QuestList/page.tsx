@@ -1,5 +1,5 @@
 
-import { QuestList } from '@/components/QuestLists'
+import { QuestList } from '@/components/questList/QuestLists'
 import React from 'react'
 
 function page() {

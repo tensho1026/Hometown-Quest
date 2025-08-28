@@ -9,6 +9,7 @@ import Link from "next/link";
 import { dailyQuestType } from "@/types/todayQuest";
 import { useUser } from "@clerk/nextjs";
 import { getTodayQuests } from "@/app/actions/getTodayQuests/getTodayQuests";
+import QuestListHeader from "./QuestListHeader";
 
 interface QuestListProps {
   onQuestSelect: (quest: any) => void;
@@ -50,17 +51,7 @@ export function QuestList() {
   return (
     <div className="flex flex-col h-screen bg-gradient-to-b from-amber-50 to-orange-50">
       {/* Header */}
-      <div className="bg-gradient-to-r from-amber-600 to-orange-600 text-white p-4 shadow-lg">
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
-            <List className="w-6 h-6" />
-          </div>
-          <div>
-            <h1 className="font-bold text-lg">クエスト一覧</h1>
-            <p className="text-sm opacity-90">あなたの冒険を管理しよう</p>
-          </div>
-        </div>
-      </div>
+      <QuestListHeader/>
 
       {/* Content */}
       <div className="flex-1 p-4 overflow-y-auto pb-20">
