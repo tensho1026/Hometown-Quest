@@ -4,8 +4,8 @@ import { Camera } from "lucide-react";
 import { Button } from "../ui/button";
 import { useState, useEffect } from "react";
 import { UserResource } from "@clerk/types";
-import { changeMyHomeTownImage } from "@/app/actions/homeTownImage/changeImage";
 import Image from "next/image";
+import { useHomeTownImageUploader } from "@/hooks/home/useHomeTownImageUploader";
 
 interface HomeTownImageProps {
   user: UserResource | null | undefined;
@@ -13,49 +13,16 @@ interface HomeTownImageProps {
 }
 
 function HomeTownImage({ user, currentImage }: HomeTownImageProps) {
-  const [hometownImage, setMyHometownImage] = useState<string | null>(
-    currentImage
-  );
-  const [isUploading, setIsUploading] = useState(false);
-  const [imageLoadError, setImageLoadError] = useState(false);
+  const [imageLoadError, setImageLoadError] = useState(false)
 
-  // 親コンポーネントから渡された画像が変更された場合に、内部ステートを同期する
-  useEffect(() => {
-    setMyHometownImage(currentImage);
-  }, [currentImage]);
+  
+  const { hometownImage, isUploading, error, handleImageChange } =
+    useHomeTownImageUploader({ user, initialImage: currentImage });
 
-  const handleImageChange = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const onFileInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (!file || !user?.id) {
-      return;
-    }
-
-    setIsUploading(true);
-
-    try {
-      const formData = new FormData();
-      formData.append("image", file);
-      formData.append("userId", user.id); // userIdをServer Actionに渡す
-
-      const newImageUrl = await changeMyHomeTownImage(formData);
-
-      if (newImageUrl) {
-        setMyHometownImage(newImageUrl);
-        setImageLoadError(false);
-      }
-    } catch (error) {
-      console.error("画像アップロードエラー:", error);
-      alert(
-        error instanceof Error
-          ? error.message
-          : "画像のアップロードに失敗しました。"
-      );
-    } finally {
-      setIsUploading(false);
-      event.target.value = "";
-    }
+    handleImageChange(file);
+    event.target.value = ""; // ファイル選択ダイアログをリセット
   };
 
   return (
@@ -91,7 +58,7 @@ function HomeTownImage({ user, currentImage }: HomeTownImageProps) {
                 type="file"
                 accept="image/*"
                 className="absolute inset-0 z-10 w-full h-full cursor-pointer opacity-0"
-                onChange={handleImageChange}
+                onChange={onFileInputChange}
                 disabled={isUploading}
               />
               <Camera className="w-4 h-4 mr-2" />
