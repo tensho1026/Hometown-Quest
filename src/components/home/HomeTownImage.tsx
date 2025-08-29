@@ -50,7 +50,7 @@ function HomeTownImage({ user, currentImage }: HomeTownImageProps) {
       alert(
         error instanceof Error
           ? error.message
-          : "画像のアップロードに失敗しました。"
+          : "画像のアップロードに失敗しました。....."
       );
     } finally {
       setIsUploading(false);
