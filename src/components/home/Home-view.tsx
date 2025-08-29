@@ -8,12 +8,14 @@ import { getMyHomeTownImage } from "@/app/actions/homeTownImage/getMyHomeTown";
 import HomeHeader from "./HomeHeader";
 import HomeTownImage from "./HomeTownImage";
 import { QuestList } from "./QuestList";
+import { SaveUser } from "@/hooks/saveUser";
 
 export function HomeView() {
   const [dailyQuests, setDailyQuests] = useState<dailyQuestType[]>([]);
   const [hometownImage, setMyHometownImage] = useState<string | null>(null);
   const { user, isLoaded } = useUser();
-
+  console.log(user?.id);
+  SaveUser()
   useEffect(() => {
     if (isLoaded && user) {
       const fetchHomeData = async () => {
@@ -27,6 +29,7 @@ export function HomeView() {
           setMyHometownImage(null);
         }
       };
+
       fetchHomeData();
     }
   }, [isLoaded, user]);
@@ -44,7 +47,6 @@ export function HomeView() {
             badgeText="毎日更新"
             quests={dailyQuests}
             type="daily"
-            
           />
 
           {/* 未完成なためコメントアウト */}
