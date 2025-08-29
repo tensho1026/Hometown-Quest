@@ -1,38 +1,15 @@
 "use client";
-
-import { useEffect, useState } from "react";
-import { dailyQuestType } from "@/types/todayQuest";
 import { useUser } from "@clerk/nextjs";
-import { getTodayQuests } from "@/app/actions/getTodayQuests/getTodayQuests";
-import { getMyHomeTownImage } from "@/app/actions/homeTownImage/getMyHomeTown";
 import HomeHeader from "./HomeHeader";
 import HomeTownImage from "./HomeTownImage";
 import { QuestList } from "./QuestList";
-import { SaveUser } from "@/hooks/saveUser";
+import { SaveUser } from "@/hooks/home/saveUser";
+import { useFetchHomeData } from "@/hooks/home/fetchHomeData";
 
 export function HomeView() {
-  const [dailyQuests, setDailyQuests] = useState<dailyQuestType[]>([]);
-  const [hometownImage, setMyHometownImage] = useState<string | null>(null);
-  const { user, isLoaded } = useUser();
-  console.log(user?.id);
-  SaveUser()
-  useEffect(() => {
-    if (isLoaded && user) {
-      const fetchHomeData = async () => {
-        try {
-          const dailyQuest = await getTodayQuests(user.id);
-          const myhomeTown = await getMyHomeTownImage(user.id);
-          setDailyQuests(dailyQuest);
-          setMyHometownImage(myhomeTown ?? null);
-        } catch (error) {
-          console.error("データ取得エラー:", error);
-          setMyHometownImage(null);
-        }
-      };
-
-      fetchHomeData();
-    }
-  }, [isLoaded, user]);
+  const { user } = useUser();
+  SaveUser();
+  const { dailyQuests, hometownImage } = useFetchHomeData();
 
   return (
     <div className="flex flex-col h-screen bg-gradient-to-b from-amber-50 to-orange-50">
