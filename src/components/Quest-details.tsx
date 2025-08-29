@@ -3,16 +3,15 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Star, Clock, Camera } from "lucide-react";
-import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { getTodayQuestById } from "@/app/actions/getTodayQuestBuId/getTodayQuestById";
 import { achieveQuest } from "@/app/actions/achieveQuest/achieveQuest";
 import { useUser } from "@clerk/nextjs";
-import { dailyQuestType } from "@/types/todayQuest";
 import Link from "next/link";
+import { useFetchDetail } from "@/hooks/detail/useFetchDetail";
 
 export function QuestDetail() {
-  const [quest, setQuest] = useState<dailyQuestType | null>();
+  const { user } = useUser();
+  const router = useRouter();
   const params = useParams();
   const id = params.id;
 
@@ -25,25 +24,7 @@ export function QuestDetail() {
     }
   }
 
-  const { user } = useUser();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (questId) {
-      const getQuestFunction = async () => {
-        const questDetail = await getTodayQuestById(questId);
-        if (questDetail) {
-          // idをnumberからstringに変換
-          const questWithStringId = {
-            ...questDetail,
-            id: String(questDetail.id),
-          };
-          setQuest(questWithStringId);
-        }
-      };
-      getQuestFunction();
-    }
-  }, []);
+  const quest = useFetchDetail(questId);
 
   const handleAchieve = async () => {
     if (questId && user) {
@@ -61,10 +42,6 @@ export function QuestDetail() {
     return quest.assignedTo[0].isCompleted;
   };
 
-  useEffect(() => {
-    console.log("Quest data:", quest);
-    console.log("Is completed:", isQuestCompleted());
-  }, [quest]);
   return (
     <div className="flex flex-col h-screen bg-gradient-to-b from-amber-50 to-orange-50">
       {/* Header */}
@@ -74,7 +51,8 @@ export function QuestDetail() {
             <Button
               variant="ghost"
               size="icon"
-              className="text-white hover:bg-white/20">
+              className="text-white hover:bg-white/20"
+            >
               <ArrowLeft className="w-5 h-5" />
             </Button>
           </Link>
@@ -106,12 +84,14 @@ export function QuestDetail() {
               <div className="flex items-center gap-2 mb-2">
                 <Badge
                   variant="outline"
-                  className="border-amber-400 text-amber-700">
+                  className="border-amber-400 text-amber-700"
+                >
                   {quest?.type}
                 </Badge>
                 <Badge
                   variant="secondary"
-                  className="bg-green-100 text-green-700">
+                  className="bg-green-100 text-green-700"
+                >
                   {quest?.level}
                 </Badge>
               </div>
@@ -179,14 +159,16 @@ export function QuestDetail() {
               {isQuestCompleted() ? (
                 <Button
                   className="w-full bg-gray-400 hover:bg-gray-400 text-white font-bold py-3 text-lg shadow-lg cursor-not-allowed"
-                  disabled>
+                  disabled
+                >
                   <span className="mr-2">✅</span>
                   クエスト達成済み
                 </Button>
               ) : (
                 <Button
                   className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold py-3 text-lg shadow-lg"
-                  onClick={handleAchieve}>
+                  onClick={handleAchieve}
+                >
                   <span className="mr-2">🎯</span>
                   クエスト達成する
                 </Button>
@@ -194,7 +176,8 @@ export function QuestDetail() {
 
               <Button
                 variant="outline"
-                className="w-full border-2 border-amber-400 text-amber-700 hover:bg-amber-50 font-bold py-3 bg-transparent">
+                className="w-full border-2 border-amber-400 text-amber-700 hover:bg-amber-50 font-bold py-3 bg-transparent"
+              >
                 <Camera className="w-5 h-5 mr-2" />
                 達成報告（写真撮影）
               </Button>
