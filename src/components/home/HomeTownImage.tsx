@@ -6,14 +6,15 @@ import { useState, useEffect } from "react";
 import { UserResource } from "@clerk/types";
 import Image from "next/image";
 import { useHomeTownImageUploader } from "@/hooks/home/useHomeTownImageUploader";
+import { useUser } from "@clerk/nextjs";
 
 interface HomeTownImageProps {
-  user: UserResource | null | undefined;
   currentImage: string | null;
 }
 
-function HomeTownImage({ user, currentImage }: HomeTownImageProps) {
+function HomeTownImage({  currentImage }: HomeTownImageProps) {
   const [imageLoadError, setImageLoadError] = useState(false)
+     const { user } = useUser();
 
   
   const { hometownImage, isUploading, error, handleImageChange } =

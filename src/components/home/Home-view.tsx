@@ -1,5 +1,4 @@
 "use client";
-import { useUser } from "@clerk/nextjs";
 import HomeHeader from "./HomeHeader";
 import HomeTownImage from "./HomeTownImage";
 import { QuestList } from "./QuestList";
@@ -7,7 +6,6 @@ import { SaveUser } from "@/hooks/home/saveUser";
 import { useFetchHomeData } from "@/hooks/home/fetchHomeData";
 
 export function HomeView() {
-  const { user } = useUser();
   SaveUser();
   const { dailyQuests, hometownImage } = useFetchHomeData();
 
@@ -15,7 +13,7 @@ export function HomeView() {
     <div className="flex flex-col h-screen bg-gradient-to-b from-amber-50 to-orange-50">
       <HomeHeader />
       <div className="flex-1 overflow-y-auto pb-20">
-        <HomeTownImage user={user} currentImage={hometownImage} />
+        <HomeTownImage currentImage={hometownImage} />
 
         <div className="p-4 space-y-6">
           {/* Daily Quests */}
