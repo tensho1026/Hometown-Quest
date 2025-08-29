@@ -4,27 +4,11 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Star, Trophy, MapPin, Calendar, Crown } from "lucide-react";
-
 import MyPageHeader from "./myPage/myPageHeader";
-import { useEffect, useState } from "react";
-import { dailyQuestType } from "@/types/todayQuest";
-import { getCompletedQuests } from "@/app/actions/getMypPageInfo/getQuest";
-import { useUser } from "@clerk/nextjs";
+import { useFetchMyData } from "@/hooks/myPage/useFetchMyData";
 
 export function MyPage() {
-  const [quests, setQuests] = useState<dailyQuestType[]>([]);
-
-  const { user, isLoaded } = useUser();
-
-  const userStats = {
-    nickname: "冒険者タロウ",
-    level: 12,
-    totalPoints: 2450,
-    badgeCount: 18,
-    questsCompleted: 47,
-    title: "地域探検家",
-  };
-
+  const { quests, totalPoints } = useFetchMyData();
   const badges = [
     { id: 1, name: "散歩マスター", icon: "🚶‍♀️", rarity: "common" },
     { id: 2, name: "地元愛好家", icon: "❤️", rarity: "rare" },
@@ -47,21 +31,6 @@ export function MyPage() {
     }
   };
 
-  useEffect(() => {
-    if (user && isLoaded) {
-      const fetchQuestData = async () => {
-        const questsData = await getCompletedQuests(user?.id);
-        setQuests(questsData);
-      };
-      fetchQuestData();
-    }
-  }, [user, isLoaded]);
-
-  const totalPoints = quests.reduce((sum, quest) => {
-    return sum + (quest.point ?? 0);
-  }, 0);
-
-
   return (
     <div className="flex flex-col h-screen bg-gradient-to-b from-amber-50 to-orange-50">
       {/* Header */}
@@ -79,7 +48,7 @@ export function MyPage() {
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-1">
                   <h2 className="text-xl font-bold text-gray-800">
-                    {userStats.nickname}
+                    冒険者ふうこ
                   </h2>
                   <Crown className="w-5 h-5 text-yellow-500" />
                 </div>
