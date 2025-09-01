@@ -15,6 +15,11 @@ export function HomeView() {
   const { user, isLoaded } = useUser();
 
   useEffect(() => {
+    // log hello world to console on component mount
+    console.log("hello world");
+  }, []);
+
+  useEffect(() => {
     if (isLoaded && user) {
       const fetchHomeData = async () => {
         try {
