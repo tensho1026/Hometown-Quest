@@ -5,10 +5,21 @@ import { QuestList } from "./QuestList";
 import { SaveUser } from "@/hooks/home/saveUser";
 import { useFetchHomeData } from "@/hooks/home/fetchHomeData";
 import { Toaster } from "react-hot-toast";
+import { getOneQuest } from "@/app/actions/test/test";
+import { useEffect } from "react";
 
 export function HomeView() {
   SaveUser();
   const { dailyQuests, hometownImage } = useFetchHomeData();
+
+  // テスト用：一件のクエストデータを取得してコンソールに表示
+  useEffect(() => {
+    const fetchTestData = async () => {
+      const testQuest = await getOneQuest();
+      console.log("テストクエストデータ:", testQuest);
+    };
+    fetchTestData();
+  }, []);
 
   return (
     <div className="flex flex-col h-screen bg-gradient-to-b from-amber-50 to-orange-50">
