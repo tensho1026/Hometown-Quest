@@ -1,30 +1,25 @@
-// saveUser.ts は saveUser.tsx に変更し、コンポーネントとして扱う
-'use client';
+"use client";
 
 import { saveUserToDatabase } from "@/app/actions/auth/saveUser";
 import { useUser } from "@clerk/nextjs";
 import { useEffect } from "react";
 
-// 関数をコンポーネントとして定義する
-export const SaveUser = () => {
-  const { user } = useUser();
+export function SaveUser() {
+  const { isLoaded, isSignedIn, user } = useUser();
 
   useEffect(() => {
-    // ユーザー情報がない場合は何もしない
-    if (!user?.id) return;
+    if (!isLoaded || !isSignedIn || !user?.id) return;
 
-    // 非同期関数をuseEffect内で実行する
-    const saveUserData = async () => {
+    const run = async () => {
+      // ClerkのfullNameがnullのこともあるので安全側に
       await saveUserToDatabase({
         id: user.id,
-        username: user.fullName,
-        imageUrl: user.imageUrl,
+        username: user.fullName ?? user.username ?? user.firstName ?? null,
+        imageUrl: user.imageUrl ?? null,
       });
     };
+    void run();
+  }, [isLoaded, isSignedIn, user?.id, user?.fullName, user?.imageUrl]);
 
-    saveUserData();
-  }, [user]);
-
-  // コンポーネントとして何も表示しない場合は null を返す
   return null;
-};
+}
