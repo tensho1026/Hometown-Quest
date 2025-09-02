@@ -97,14 +97,12 @@ export function MyPage() {
             <TabsList className="grid w-full grid-cols-2 bg-amber-100">
               <TabsTrigger
                 value="quests"
-                className="data-[state=active]:bg-amber-500 data-[state=active]:text-white"
-              >
+                className="data-[state=active]:bg-amber-500 data-[state=active]:text-white">
                 達成クエスト
               </TabsTrigger>
               <TabsTrigger
                 value="badges"
-                className="data-[state=active]:bg-amber-500 data-[state=active]:text-white"
-              >
+                className="data-[state=active]:bg-amber-500 data-[state=active]:text-white">
                 バッジコレクション
               </TabsTrigger>
             </TabsList>
@@ -114,15 +112,16 @@ export function MyPage() {
                 {quests.map((quest) => (
                   <div
                     key={quest.id}
-                    className="flex items-center gap-3 p-3 bg-amber-50 rounded-lg"
-                  >
+                    className="flex items-center gap-3 p-3 bg-amber-50 rounded-lg">
                     <span className="text-2xl">{quest.icon}</span>
                     <div className="flex-1">
                       <p className="font-medium text-gray-800">{quest.title}</p>
                       <div className="flex items-center gap-2 text-sm text-gray-600">
                         <Calendar className="w-4 h-4" />
                         <span>
-                          {new Date(quest.assignedDate).toLocaleDateString()}
+                          {quest.assignedDate
+                            ? new Date(quest.assignedDate).toLocaleDateString()
+                            : "No date"}
                         </span>
                       </div>
                     </div>
@@ -141,8 +140,7 @@ export function MyPage() {
                     key={badge.id}
                     className={`p-4 rounded-lg border-2 text-center ${getRarityColor(
                       badge.rarity
-                    )}`}
-                  >
+                    )}`}>
                     <div className="text-3xl mb-2">{badge.icon}</div>
                     <p className="font-medium text-sm">{badge.name}</p>
                   </div>

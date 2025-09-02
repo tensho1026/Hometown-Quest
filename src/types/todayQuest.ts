@@ -8,7 +8,9 @@ export type dailyQuestType = {
   level?: string;
   point?: number;
   category?: string;
-  assignedTo: {
+  isCompleted: boolean;
+  completedDate?: string; // For completed quests display
+  assignedTo?: {
     id: string;
     isCompleted: boolean;
     assignedDate: Date;
@@ -16,4 +18,9 @@ export type dailyQuestType = {
     mstTodaysQuestId: number | null;
     mstThisWeekQuestId: number | null;
   }[];
+};
+
+// Completed quest shape used on My Page where assignedDate is flattened on top-level
+export type completedQuestType = dailyQuestType & {
+  assignedDate?: string | Date;
 };

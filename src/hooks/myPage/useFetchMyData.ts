@@ -1,12 +1,12 @@
 "use client";
 
 import { getCompletedQuests } from "@/app/actions/getMypPageInfo/getQuest";
-import { dailyQuestType } from "@/types/todayQuest";
+import { completedQuestType } from "@/types/todayQuest";
 import { useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 
 export const useFetchMyData = () => {
-  const [quests, setQuests] = useState<dailyQuestType[]>([]);
+  const [quests, setQuests] = useState<completedQuestType[]>([]);
   const { user, isLoaded } = useUser();
   useEffect(() => {
     if (user && isLoaded) {
