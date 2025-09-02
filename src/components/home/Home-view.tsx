@@ -4,6 +4,7 @@ import HomeTownImage from "./HomeTownImage";
 import { QuestList } from "./QuestList";
 import { SaveUser } from "@/hooks/home/saveUser";
 import { useFetchHomeData } from "@/hooks/home/fetchHomeData";
+import { Toaster } from "react-hot-toast";
 
 export function HomeView() {
   SaveUser();
@@ -11,6 +12,8 @@ export function HomeView() {
 
   return (
     <div className="flex flex-col h-screen bg-gradient-to-b from-amber-50 to-orange-50">
+      <Toaster position="top-center" />
+
       <HomeHeader />
       <div className="flex-1 overflow-y-auto pb-20">
         <HomeTownImage currentImage={hometownImage} />

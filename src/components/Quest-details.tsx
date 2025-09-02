@@ -8,6 +8,7 @@ import { achieveQuest } from "@/app/actions/achieveQuest/achieveQuest";
 import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import { useFetchDetail } from "@/hooks/detail/useFetchDetail";
+import toast, { Toaster } from "react-hot-toast";
 
 export function QuestDetail() {
   const { user } = useUser();
@@ -29,6 +30,7 @@ export function QuestDetail() {
   const handleAchieve = async () => {
     if (questId && user) {
       await achieveQuest(user?.id, questId);
+      toast.success("クエストを達成しました！");
       router.push("/");
     }
   };
@@ -45,6 +47,7 @@ export function QuestDetail() {
   return (
     <div className="flex flex-col h-screen bg-gradient-to-b from-amber-50 to-orange-50">
       {/* Header */}
+
       <div className="bg-gradient-to-r from-amber-600 to-orange-600 text-white p-4 shadow-lg">
         <div className="flex items-center gap-3">
           <Link href="/">
