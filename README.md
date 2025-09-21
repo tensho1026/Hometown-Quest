@@ -1,36 +1,40 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Hometown-Quest 🗺️
 
-## Getting Started
+Hometown-Quest は、**日常の何でもないことをクエスト化することで、小さなことでも達成感を得たり、クエストを通じて新しい体験を楽しめるアプリ**です。  
+「今日の散歩をクエストにする」「新しいカフェに行くことを挑戦にする」など、毎日をゲーム感覚で楽しくします。
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## ✨ 特徴
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **日常が冒険に**: 何気ない行動をクエスト化
+- **小さな達成感**: 1つずつクリアして達成感を積み重ねる
+- **新しい体験**: 普段やらないこともクエストを通じて挑戦できる
+- **ユーザー管理**: Clerk による認証で安心して利用可能
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🛠 使用技術
 
-## Learn More
+- **フロントエンド / バックエンド**: Next.js (Server Actions)
+- **認証**: Clerk
+- **データベース**: Supabase
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📸 画面イメージ
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### ホーム画面
+（ここにスクリーンショットを挿入）
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### クエスト詳細ページ
+（ここにスクリーンショットを挿入）
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+### マイページ
+（ここにスクリーンショットを挿入）
+
+
